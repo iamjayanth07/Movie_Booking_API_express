@@ -12,7 +12,7 @@ const createMovie = async (req,res)=>{
         return res.status(201).json(successResponseBody);
 
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return res.status(500).json(errorResponseBody);
     }
 }
@@ -72,11 +72,30 @@ const updateMovie = async(req,res)=>{
     }
 }
 
+const getMovies = async (req,res)=>{
+    try {
+        const response=await movieService.fetchMovies(req.query);
+        if(response.err){
+            errorResponseBody.error=response.err;
+            return res.status(response.code).json(errorResponseBody);
+        }
+        successResponseBody.data=response;
+        return res.status(200).json(successResponseBody)
+        
+    } catch (error) {
+        console.log(error);
+        errorResponseBody.error=error;
+        return res.status(500).json(errorResponseBody);
+        
+    }
+}
+
 
 
 module.exports ={
     createMovie,
     deleteMovie,
     getMovie,
-    updateMovie
+    updateMovie,
+    getMovies
 }
