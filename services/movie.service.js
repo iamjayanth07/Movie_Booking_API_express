@@ -1,8 +1,8 @@
 const Movie =require('../models/movie.model');
 
 const createMovie=async(data)=>{
-    const movie= await Movie.create(data);
-    return movie;
+        const movie= await Movie.create(data);
+        return movie;    
 }
 
 const deleteMovie=async(id) => {
@@ -23,8 +23,15 @@ const getMovieById =async (id)=>{
     return movie;
 }
 
+const updateMovie = async(id,data)=>{
+    const movie=await Movie.findByIdAndUpdate(id,data,{new:true});//{new:true} this property gives after updated movie data.If not old data gives
+    console.log(movie);
+    return movie;
+}
+
 module.exports ={
     getMovieById,
     createMovie,
-    deleteMovie
+    deleteMovie,
+    updateMovie
 }

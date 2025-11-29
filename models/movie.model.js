@@ -3,11 +3,13 @@ const mongoose =require('mongoose');
 const movieSchemas = new mongoose.Schema({
     name:{
         type:String,
-        required:true
+        required:true,
+        
     },
     description:{
         type:String,
-        required:true
+        required:true,
+        
     },
     casts: {
         type:[String],
