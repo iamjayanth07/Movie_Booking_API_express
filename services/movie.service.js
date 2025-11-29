@@ -1,0 +1,30 @@
+const Movie =require('../models/movie.model');
+
+const createMovie=async(data)=>{
+    const movie= await Movie.create(data);
+    return movie;
+}
+
+const deleteMovie=async(id) => {
+    const response=await Movie.deleteOne(id);
+    return response;
+}
+
+const getMovieById =async (id)=>{
+    const movie=await Movie.findById(id);
+    console.log("Movie found ",movie);
+    if(!movie){
+        return{
+            err:"No movie found for the corresponding id provided",
+            code:404,
+            
+        }        
+    };
+    return movie;
+}
+
+module.exports ={
+    getMovieById,
+    createMovie,
+    deleteMovie
+}
