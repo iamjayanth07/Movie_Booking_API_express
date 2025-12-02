@@ -3,7 +3,7 @@ const bodyParser=require("body-parser");
 const env=require("dotenv");
 const  mongoose=require('mongoose');
 const MovieRoutes=require('./routes/movie.routes');
-
+const theatreRoutes=require('./routes/theatre.routes');
 
 
 const app = express(); //express application object
@@ -16,8 +16,9 @@ env.config();
 app.use(express.json());  
 app.use(express.urlencoded({ extended: true }));
 
-
+//Registering routes
 MovieRoutes(app);//Invoking movie route
+theatreRoutes(app);//Invoking theatre route
 
 
 app.get('/',(req,res)=>{
