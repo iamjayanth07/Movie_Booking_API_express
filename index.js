@@ -21,25 +21,18 @@ MovieRoutes(app);//Invoking movie route
 theatreRoutes(app);//Invoking theatre route
 
 
-app.get('/',(req,res)=>{
-    console.log("Hitting the home")
-    return res.json({
-        success:true,
-        message:"fetched home"
-    })    
-})
 
 mongoose.connect(process.env.DB_URL)
   .then(() => {
     console.log('✅ Connected to MongoDB');
 
     app.listen(process.env.PORT, () => {
-      console.log(`🚀 Server started on port ${process.env.PORT}`);
+      console.log(`Server started on port ${process.env.PORT}`);
     });
 
     
   })
   .catch((err) => {
-    console.log('❌ Error connecting to MongoDB:', err);
+    console.log('Error connecting to MongoDB:', err);
   });
 

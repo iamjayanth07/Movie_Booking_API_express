@@ -1,6 +1,6 @@
 const Theatre=require('../models/theatre.model');
 
-
+//Data -> contains the details of the theatre to be  created 
 const createTheatre=async(data)=>{
         try {
             const response= await Theatre.create(data);
@@ -25,6 +25,9 @@ const createTheatre=async(data)=>{
         }            
 }
 
+
+// id-> Which will be used to identify the theatre to be deleted
+// return type:Object containing detail of the theatre
 const deleteTheatre = async(id)=>{
     try {
         const response= await Theatre.findByIdAndDelete(id);
@@ -42,6 +45,9 @@ const deleteTheatre = async(id)=>{
     }
 }
 
+
+// id-> Which will be used to identify the theatre to be deleted
+// return type:Object containing detail of the theatre
 const getTheatre = async (id)=>{
     try {
         const response=await Theatre.findById(id);
@@ -59,8 +65,9 @@ const getTheatre = async (id)=>{
     }
 }
 
-const getAllTheatre = async ()=>{
+const getAllTheatre = async (data)=>{
     try {
+        let query={};
         const response=await Theatre.find({});
         return response;        
     } catch (error) {
