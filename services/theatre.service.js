@@ -77,9 +77,41 @@ const getAllTheatre = async (data)=>{
     }
 }
 
+const updateMoviesInTheatre = async(theatreId,movieIds,insert)=>{
+
+    const theatre=await Theatre.findById(theatreId);
+    if(!theatre){
+        return {
+            err:"Theatre not found for the given id provided",
+            code:404,
+        }
+    }
+
+    if(insert){
+        //We need to add movies
+        movieIds.forEach(movieId=>{
+           theatre.movies.push(movieId);
+        })
+
+    }else{
+        //We need to remove movies.Here if the insert is false which means removing the 
+        let savedMovieIds=theatre.movies;
+        movieIds.forEach((movieId)=>{
+            savedMovieIds=savedMovieIds.filter(smi => smi == movieId);
+
+        });
+        theatre.movies=savedMovieIds;
+    }
+    await theatre.save();//saving changes in the database
+    // return theatre
+    return theatre.populate('movies');// This will expand the details of the movie updated or added in the response body
+
+    
+}
 module.exports={
     createTheatre,
     deleteTheatre,
     getTheatre,
-    getAllTheatre
+    getAllTheatre,
+    updateMoviesInTheatre
 }
