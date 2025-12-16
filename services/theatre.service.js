@@ -1,4 +1,5 @@
 const Theatre=require('../models/theatre.model');
+// const Movie=require('../models/movie.model');
 
 //Data -> contains the details of the theatre to be  created 
 const createTheatre=async(data)=>{
@@ -84,9 +85,9 @@ const getAllTheatre = async (data)=>{
             query.name = data.name;
         }
 
-        // if(data && data.movieId) {
-        //     query.movies = {$all: data.movieId};
-        // }
+        if(data && data.movieId) {
+            query.movies = {$all: data.movieId};
+        }
 
         if(data && data.limit) {
             pagination.limit = data.limit;
@@ -99,7 +100,7 @@ const getAllTheatre = async (data)=>{
             pagination.skip = data.skip*perPage;
         }
 
-        const response=await Theatre.find(query,{},pagination);
+        const response=await Theatre.find(query,{},pagination);//
         return response;        
     } catch (error) {
         console.log(error);
