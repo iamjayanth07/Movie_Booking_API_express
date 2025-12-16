@@ -21,6 +21,8 @@ const routes = (app)=>{
 
     app.put('/mba/api/v1/theatres/:id',theatreController.updateTheatre);
 
+    app.get('/mba/api/v1/theatres/:id/movies',theatreController.getMoviesInATheatre);
+
 
 }
 
