@@ -153,7 +153,7 @@ const checkMovieInATheatre = async (req, res) => {
     try {
         const response = await theatreService.checkMovieInATheatre(req.params.theatreId, req.params.movieId);
         if(response.err) {
-            errorResponseBody.err = response.err;
+            errorResponseBody.error = response.err;
             return res.status(response.status).json(errorResponseBody);
         }
         successResponseBody.data = response;
