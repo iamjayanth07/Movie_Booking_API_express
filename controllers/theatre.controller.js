@@ -88,7 +88,7 @@ const getAllTheatre = async (req,res)=>{
 //Insert:boolean that tells whether we want to add movie or remove them
 // returns theatre object
 
-const updateMovies = async (req,res)=>{
+const updateMoviesInTheatre = async (req,res)=>{
     try {
         const response=await theatreService.updateMoviesInTheatre(
             req.params.id,
@@ -139,6 +139,6 @@ module.exports={
     deleteTheatre,
     getTheatre,
     getAllTheatre,
-    updateMovies,
+    updateMoviesInTheatre,
     updateTheatre,
 }
