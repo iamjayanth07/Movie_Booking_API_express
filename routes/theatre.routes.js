@@ -14,7 +14,12 @@ const routes = (app)=>{
 
     app.get('/mba/api/v1/theatres',theatreController.getAllTheatre);
 
+    //It will update movies within the particular theatre
     app.patch('/mba/api/v1/theatres/:id/movies',theatreMiddlewares.validateUpdateMoviesRequest,theatreController.updateMovies);
+
+    app.patch('/mba/api/v1/theatres/:id',theatreController.updateTheatre);
+
+    app.put('/mba/api/v1/theatres/:id',theatreController.updateTheatre);
 
 
 }

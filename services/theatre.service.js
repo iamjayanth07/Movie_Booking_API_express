@@ -139,10 +139,38 @@ const updateMoviesInTheatre = async(theatreId,movieIds,insert)=>{
 
     
 }
+
+const updateTheatre = async (id, data) => {
+    try {
+        const response = await Theatre.findByIdAndUpdate(id, data, {
+            new: true, runValidators: true
+        });//new :true returns the updated data
+        if(!response) {
+            // no record found for the given id
+            throw {
+                err: "No theatre found for the given id",
+                code: 404
+            }
+        }
+        return response;
+    } catch (error) {
+        if(error.name == 'ValidationError') {
+            let err = {};
+            Object.keys(error.errors).forEach((key) => {
+                err[key] = error.errors[key].message;
+            });
+            throw {err: err, code: 422}
+        }
+        throw error;
+    }
+}
+
+
 module.exports={
     createTheatre,
     deleteTheatre,
     getTheatre,
     getAllTheatre,
-    updateMoviesInTheatre
+    updateMoviesInTheatre,
+    updateTheatre,
 }
