@@ -67,8 +67,39 @@ const getTheatre = async (id)=>{
 
 const getAllTheatre = async (data)=>{
     try {
-        let query={};
-        const response=await Theatre.find({});
+        let query = {};
+        console.log(data);
+         let pagination = {};
+        
+        if(data && data.city) {
+            // this checks whether city is present in query params or not
+            query.city = data.city;
+        } 
+        if(data && data.pincode) {
+            // this checks whether pincode is present in query params or not
+            query.pincode = data.pincode;
+        }
+        if(data && data.name) {
+            // this checks whether name is present in query params or not 
+            query.name = data.name;
+        }
+
+        // if(data && data.movieId) {
+        //     query.movies = {$all: data.movieId};
+        // }
+
+        if(data && data.limit) {
+            pagination.limit = data.limit;
+        }
+        
+        //Skip like page number how many theatre record need to sent .if skip=2 means second page .If skip=7 means 7th page
+        if(data && data.skip) {
+            // for first page we send skip as 0
+            let perPage = (data.limit) ? data.limit : 3;
+            pagination.skip = data.skip*perPage;
+        }
+
+        const response=await Theatre.find(query,{},pagination);
         return response;        
     } catch (error) {
         console.log(error);
