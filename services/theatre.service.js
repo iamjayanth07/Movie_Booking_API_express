@@ -1,4 +1,5 @@
 const Theatre=require('../models/theatre.model');
+// const Movie=require('../models/movie.model');
 
 //Data -> contains the details of the theatre to be  created 
 const createTheatre=async(data)=>{
@@ -65,6 +66,7 @@ const getTheatre = async (id)=>{
     }
 }
 
+//
 const getAllTheatre = async (data)=>{
     try {
         let query = {};
@@ -84,9 +86,9 @@ const getAllTheatre = async (data)=>{
             query.name = data.name;
         }
 
-        // if(data && data.movieId) {
-        //     query.movies = {$all: data.movieId};
-        // }
+        if(data && data.movieId) {
+            query.movies = {$all: data.movieId};
+        }
 
         if(data && data.limit) {
             pagination.limit = data.limit;
@@ -99,7 +101,7 @@ const getAllTheatre = async (data)=>{
             pagination.skip = data.skip*perPage;
         }
 
-        const response=await Theatre.find(query,{},pagination);
+        const response=await Theatre.find(query,{},pagination);//
         return response;        
     } catch (error) {
         console.log(error);
@@ -108,36 +110,42 @@ const getAllTheatre = async (data)=>{
     }
 }
 
+//Insert:true means adding movie,false means removing movie
+// "insert":false,
+// "movieIds":["68fc5681628ca65a8940edec"]
+//JSON required to pass for updating movies in a theatre
 const updateMoviesInTheatre = async(theatreId,movieIds,insert)=>{
 
-    const theatre=await Theatre.findById(theatreId);
-    if(!theatre){
-        return {
-            err:"Theatre not found for the given id provided",
-            code:404,
+        try {
+        let theatre;
+        if (insert) {
+            // we need to add movies
+            theatre = await Theatre.findByIdAndUpdate(
+                {_id: theatreId},
+                {$addToSet: {movies: {$each: movieIds}}},
+                {new: true}
+            );
+        } else {
+            // we need to remove movies
+            theatre = await Theatre.findByIdAndUpdate(
+                {_id: theatreId},
+                {$pull: {movies: {$in: movieIds}}},
+                {new: true}
+            );
         }
-    }
-
-    if(insert){
-        //We need to add movies
-        movieIds.forEach(movieId=>{
-           theatre.movies.push(movieId);
-        })
-
-    }else{
-        //We need to remove movies.Here if the insert is false which means removing the 
-        let savedMovieIds=theatre.movies;
-        movieIds.forEach((movieId)=>{
-            savedMovieIds=savedMovieIds.filter(smi => smi == movieId);
-
-        });
-        theatre.movies=savedMovieIds;
-    }
-    await theatre.save();//saving changes in the database
-    // return theatre
-    return theatre.populate('movies');// This will expand the details of the movie updated or added in the response body
-
-    
+        
+        return theatre.populate('movies');//This will show the updated theatre detail in the response body
+    } catch (error) {
+        if(error.name == 'TypeError') {
+            return {
+                code: 404,
+                err: 'No theatre found for the given id'
+            }
+        }
+        console.log("Error is", error);
+        throw error;
+    }    
+   
 }
 
 const updateTheatre = async (id, data) => {
@@ -165,6 +173,40 @@ const updateTheatre = async (id, data) => {
     }
 }
 
+const getMoviesInATheatre = async (id) => {
+    try {
+        const theatre = await Theatre.findById(id, {name: 1, movies: 1, address: 1}).populate('movies');
+        // const theatre = await Theatre.findById(id,{name: 1, movies: 1, address: 1});
+        if(!theatre) {
+            return {
+                err: 'No theatre with the given id found',
+                code: 404
+            }
+        }
+        return theatre;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+
+const checkMovieInATheatre = async (theatreId, movieId) => {
+    try {
+        let response = await Theatre.findById(theatreId);
+        if(!response) {
+            return {
+                err: "No such theatre found for the given id",
+                code: 404
+            }
+        }
+        return response.movies.indexOf(movieId) != -1;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 
 module.exports={
     createTheatre,
@@ -173,4 +215,6 @@ module.exports={
     getAllTheatre,
     updateMoviesInTheatre,
     updateTheatre,
+    getMoviesInATheatre,
+    checkMovieInATheatre,
 }

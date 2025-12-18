@@ -16,6 +16,8 @@ env.config();
 app.use(express.json());  
 app.use(express.urlencoded({ extended: true }));
 
+mongoose.set('debug',true);
+
 //Registering routes
 MovieRoutes(app);//Invoking movie route
 theatreRoutes(app);//Invoking theatre route
