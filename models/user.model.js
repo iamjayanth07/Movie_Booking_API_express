@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: "APPROVED"
     }
-}, {timestamps: true});
+}, {timestamps: true});// creates cretedAt,updatedAt by default
 
 const User=mongose.model('User',userSchema);
 module.exports=User;
