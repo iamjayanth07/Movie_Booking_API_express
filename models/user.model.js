@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     userRole: {
         type: String,
-        // required: true,
+        required: true,
         default: "CUSTOMER"
     },
     userStatus: {
@@ -35,7 +35,9 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});// creates cretedAt,updatedAt by default
 
-//This will help to excute logic inside it before saving the user data into database .This is called hooks[In RDBMS it is clled triggers]
+
+
+//This will help to excute logic inside it before saving the user data into database .This is called hooks(This is kind of middleware)[In RDBMS it is clled triggers]
 userSchema.pre('save', async function (next) {
     // a trigger to encrypt the plain password before saving the user
 

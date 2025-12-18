@@ -10,6 +10,10 @@ const signup= async(req,res)=>{
         return res.status(200).json(successResponseBody);
         
     } catch (error) {
+        if(error.err){
+            errorResponseBody.error=error.err;
+            return res.status(error.code).json(errorResponseBody);
+        }
         errorResponseBody.error=error;
         return res.status(500).json(errorResponseBody);
         
