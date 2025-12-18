@@ -4,7 +4,7 @@ const env=require("dotenv");
 const  mongoose=require('mongoose');
 const MovieRoutes=require('./routes/movie.routes');
 const theatreRoutes=require('./routes/theatre.routes');
-
+const authRoutes=require('./routes/auth.route')
 
 const app = express(); //express application object
 env.config();
@@ -21,6 +21,7 @@ mongoose.set('debug',true);
 //Registering routes
 MovieRoutes(app);//Invoking movie route
 theatreRoutes(app);//Invoking theatre route
+authRoutes(app);//Invoking auth route
 
 
 

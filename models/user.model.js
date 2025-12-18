@@ -1,4 +1,4 @@
-const mongose=require('mongoose');
+const mongoose=require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     userRole: {
         type: String,
-        required: true,
+        // required: true,
         default: "CUSTOMER"
     },
     userStatus: {
@@ -34,5 +34,5 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});// creates cretedAt,updatedAt by default
 
-const User=mongose.model('User',userSchema);
+const User=mongoose.model('User',userSchema);
 module.exports=User;
