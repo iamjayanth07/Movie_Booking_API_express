@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const bcrypt=require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -33,6 +34,23 @@ const userSchema = new mongoose.Schema({
         default: "APPROVED"
     }
 }, {timestamps: true});// creates cretedAt,updatedAt by default
+
+//This will help to excute logic inside it before saving the user data into database .This is called hooks[In RDBMS it is clled triggers]
+userSchema.pre('save', async function (next) {
+    // a trigger to encrypt the plain password before saving the user
+
+    // const user=this;
+    // console.log(this);
+    //Here this refers to current entry or you can say user or {user object}
+
+    const hash = await bcrypt.hash(this.password, 10);
+    // console.log(hash);
+    this.password = hash;
+    // console.log(this.password);
+    next();
+});
+
+
 
 const User=mongoose.model('User',userSchema);
 module.exports=User;
