@@ -73,7 +73,7 @@ userSchema.methods.isValidPassword = async function (plainPassword) {
     const currentUser = this;//this is the current user object
     const compare = await bcrypt.compare(plainPassword, currentUser.password);
     return compare;
-}
+}//This custom fuction called procedure
 
 
 

@@ -1,6 +1,7 @@
 
 const theatreController=require('../controllers/theatre.controller');
 const theatreMiddlewares=require('../middlewares/theatre.middlewares');
+const authMiddleware=require('../middlewares/auth.middlewares');
 
 const routes = (app)=>{
     app.post('/mba/api/v1/theatres',
@@ -8,8 +9,9 @@ const routes = (app)=>{
         theatreController.createTheatre
     );
 
-    app.delete('/mba/api/v1/theatres/:id',theatreController.deleteTheatre);
+    app.delete('/mba/api/v1/theatres/:id',authMiddleware.isAuthenticated,theatreController.deleteTheatre);
 
+    //Here protected the route using isAuthenticated middleware .Before deleting you nned to pass middleware
     app.get('/mba/api/v1/theatres/:id',theatreController.getTheatre);
 
     app.get('/mba/api/v1/theatres',theatreController.getAllTheatre);
